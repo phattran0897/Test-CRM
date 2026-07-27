@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/auth.store';
 import LoginPage from './pages/LoginPage';
 import UserManagementPage from './pages/admin/UserManagement';
+import Dashboard from './pages/Dashboard';
 import { CheckRole } from './components/auth/RBAC';
 
 const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) => {
@@ -22,11 +23,8 @@ function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <div className="p-8">
-                <h2 className="text-2xl mb-4">Dashboard Home - Authenticated successfully!</h2>
-                <CheckRole allowed={['admin']}>
-                  <a href="/admin/users" className="text-blue-600 underline">Quản trị người dùng (Admin)</a>
-                </CheckRole>
+              <div>
+                <Dashboard />
               </div>
             </ProtectedRoute>
           }

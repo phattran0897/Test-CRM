@@ -18,3 +18,10 @@
 - [x] (Frontend) Tạo màn hình `UserManagementPage` dành riêng cho Admin.
 - [x] Cập nhật unit test và manual test.
 - [x] Commit & Push Github.
+
+## Milestone 4: Dashboard
+- [x] Xây dựng `DashboardController` & `DashboardService` cho dữ liệu thống kê aggregated
+- [x] Thiết kế `DashboardPage` với Recharts LineChart
+- [x] Dựng `KPICard` Components cho doanh thu, leads
+- [x] Tích hợp API gọi dữ liệu thống kê bảo mật bằng JWT
+- [ ] Push code Github

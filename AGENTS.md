@@ -111,4 +111,4 @@ Giải thích folder structure, trách nhiệm từng file/layer, routing strate
 11. Reports & Audit Log
 12. Deployment (Vercel + Render/Railway + Neon/Supabase + Upstash, CI/CD, cấu hình CORS/env cho môi trường production)
 
-Sau mỗi milestone: **dừng lại, chờ tôi duyệt**, chỉ tiếp tục khi tôi xác nhận "OK, tiếp tục milestone kế".
+
