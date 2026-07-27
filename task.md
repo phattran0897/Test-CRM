@@ -1,0 +1,7 @@
+- [x] Milestone 1: Phê duyệt Implementation Plan
+- [x] Khởi tạo thư mục `frontend` (Vite, React 18, TailwindCSS, Zustand)
+- [x] Khởi tạo thư mục `backend` (NestJS, Prisma, Clean Architecture)
+- [x] Thiết lập thư viện và cấu hình cho Frontend và Backend
+- [x] Tạo module `/health` cho Backend
+- [x] Thiết lập CI/CD cơ bản (`.github/workflows`)
+- [x] Kiểm tra Manual Verification & Automated Verification
