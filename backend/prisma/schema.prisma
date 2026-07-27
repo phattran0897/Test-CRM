@@ -13,7 +13,8 @@ model tenants {
   updated_at DateTime  @default(now()) @db.Timestamptz()
   deleted_at DateTime? @db.Timestamptz()
 
-  users users[]
+  users     users[]
+  customers customers[]
 }
 
 model users {
@@ -37,4 +38,25 @@ model users {
   @@unique([tenant_id, email], name: "uq_users_tenant_email")
   @@index([tenant_id], name: "idx_users_tenant_id")
   @@index([email], name: "idx_users_email")
+}
+
+model customers {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tenant_id  String    @db.Uuid
+  name       String    @db.VarChar(255)
+  email      String?   @db.VarChar(255)
+  phone      String?   @db.VarChar(20)
+  company    String?   @db.VarChar(255)
+  address    String?   
+  
+  created_at DateTime  @default(now()) @db.Timestamptz()
+  updated_at DateTime  @default(now()) @db.Timestamptz()
+  created_by String?   @db.Uuid
+  updated_by String?   @db.Uuid
+  deleted_at DateTime? @db.Timestamptz()
+
+  tenant     tenants   @relation(fields: [tenant_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([tenant_id], name: "idx_customers_tenant_id")
+  @@index([email], name: "idx_customers_email")
 }

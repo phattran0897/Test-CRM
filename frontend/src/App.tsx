@@ -3,6 +3,8 @@ import { useAuthStore } from './store/auth.store';
 import LoginPage from './pages/LoginPage';
 import UserManagementPage from './pages/admin/UserManagement';
 import Dashboard from './pages/Dashboard';
+import CustomerList from './pages/customers/CustomerList';
+import CustomerDetail from './pages/customers/CustomerDetail';
 import { CheckRole } from './components/auth/RBAC';
 
 const ProtectedRoute = ({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) => {
@@ -24,7 +26,42 @@ function App() {
           element={
             <ProtectedRoute>
               <div>
+                <nav className="bg-slate-900 text-white p-4 flex space-x-6">
+                  <a href="/" className="font-bold hover:text-blue-300">Dashboard</a>
+                  <a href="/customers" className="hover:text-blue-300">Customers</a>
+                  <CheckRole allowed={['admin']}>
+                    <a href="/admin/users" className="hover:text-blue-300">Admin</a>
+                  </CheckRole>
+                </nav>
                 <Dashboard />
+              </div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/customers"
+          element={
+            <ProtectedRoute>
+              <div>
+                <nav className="bg-slate-900 text-white p-4 flex space-x-6">
+                  <a href="/" className="hover:text-blue-300">Dashboard</a>
+                  <a href="/customers" className="font-bold hover:text-blue-300">Customers</a>
+                </nav>
+                <CustomerList />
+              </div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/customers/:id"
+          element={
+            <ProtectedRoute>
+              <div>
+                <nav className="bg-slate-900 text-white p-4 flex space-x-6">
+                  <a href="/" className="hover:text-blue-300">Dashboard</a>
+                  <a href="/customers" className="font-bold hover:text-blue-300">Customers</a>
+                </nav>
+                <CustomerDetail />
               </div>
             </ProtectedRoute>
           }

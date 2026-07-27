@@ -24,4 +24,11 @@
 - [x] Thiết kế `DashboardPage` với Recharts LineChart
 - [x] Dựng `KPICard` Components cho doanh thu, leads
 - [x] Tích hợp API gọi dữ liệu thống kê bảo mật bằng JWT
-- [ ] Push code Github
+- [x] Push code Github
+
+## Milestone 5: Customer Module
+- [x] Bổ sung Schema `customers` vào Prisma (hỗ trợ Soft Delete, Pagination)
+- [x] Dựng Backend Backend CRUD API (Service, Controller, Repository)
+- [x] Xây dựng Frontend UI danh sách Khách hàng (`CustomerList` - Dạng bảng)
+- [x] Xây dựng Frontend UI trang chi tiết Khách hàng (`CustomerDetail`)
+- [x] Commit & Push Github
