@@ -1,20 +1,20 @@
 # CRM Project Plan
 
-## Milestone 1: Project Setup
-- [x] Khởi tạo thư mục `frontend` (Vite, React 18, TailwindCSS, Zustand)
-- [x] Khởi tạo thư mục `backend` (NestJS, Prisma, Clean Architecture)
-- [x] Thiết lập thư viện và cấu hình cho Frontend và Backend
-- [x] Tạo module `/health` cho Backend
-- [x] Thiết lập CI/CD cơ bản (`.github/workflows`)
-- [x] Kiểm tra Manual Verification & Automated Verification
-- [x] Commit và Push toàn bộ source lên GitHub
+## Milestone 1: Project Setup (Completed)
+- [x] Khởi tạo thư mục `frontend` và `backend`
+- [x] Setup Tailwind, NestJS, Prisma, Github Actions
 
-## Milestone 2: Authentication
-- [x] Phê duyệt Implementation Plan Milestone 2
-- [x] Thiết lập Schema User trên Prisma (backend)
-- [x] Xây dựng User Module & Repository Pattern
-- [x] Xây dựng Auth Module (Login, Refresh Token, Logout, Change Password) sử dụng HttpOnly Cookie (backend)
-- [x] Thiết lập Routing và Authentication State (Zustand + Axios Interceptors) trên Frontend
-- [x] Xây dựng màn hình Login, Change Password UI (frontend)
-- [x] Kiểm thử luồng đăng nhập (Verification)
-- [x] Viết Unit Test cho AuthService
+## Milestone 2: Authentication (Completed)
+- [x] Schema User & Database Auth
+- [x] Login, Change Password, Axios Interceptors Auto-Refresh
+- [x] Unit Test AuthService
+
+## Milestone 3: RBAC & Permission
+- [x] Phê duyệt Implementation Plan Milestone 3
+- [x] Xây dựng thư mục Tiện ích gốc (root package.json & concurrently để start workspace)
+- [x] (Backend) Tạo `RolesGuard` và `@Roles()` Decorator.
+- [x] (Backend) Viết API User Management cho Admin (Tạo/Sửa/Xóa/List Roles).
+- [x] (Frontend) Tạo Role-Based UI Components (ẩn/hiện tuỳ theo user role).
+- [x] (Frontend) Tạo màn hình `UserManagementPage` dành riêng cho Admin.
+- [x] Cập nhật unit test và manual test.
+- [x] Commit & Push Github.

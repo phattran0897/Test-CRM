@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserPrismaRepository } from './repositories/user.prisma.repository';
 import { I_USER_REPOSITORY } from './repositories/user.repository.interface';
+import { UserController } from './user.controller';
 
 @Module({
+    controllers: [UserController],
     providers: [
         UserService,
         {

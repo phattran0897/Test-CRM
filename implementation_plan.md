@@ -1,40 +1,38 @@
-# Milestone 2: Authentication
+# Milestone 3: RBAC & Permission
 
 ## Mục tiêu milestone
-Xây dựng luồng xác thực an toàn (Authentication) cho Frontend và Backend sử dụng JWT & Refresh Token lưu trong HttpOnly Cookie, kèm tính năng Login, Logout, Đổi mật khẩu.
+Thiết lập hệ thống phân quyền (Role-Based Access Control) cho Backend và Frontend để đảm bảo chỉ những người dùng có quyền hợp lệ (Admin, Manager, Sales) mới được thực hiện hoặc nhìn thấy các tính năng đặc thù. Xây dựng trang Quản lý Nhân sự (Admin).
 
 ## User Review Required
 > [!IMPORTANT]
-> Dưới đây là kế hoạch kiến trúc cho chức năng Authentication. Giai đoạn này rất quan trọng về bảo mật. Xin vui lòng phê duyệt phương án:
-> 
-> 1. **Forgot Password:** Cho tính năng quên mật khẩu, ở phase này hệ thống sẽ chỉ trả token trực tiếp về client (hoặc in log) thay vì gửi email thật, để phù hợp cho việc test trên free-tier. Đồng ý không?
-> 2. **Đăng ký (Register):** Vì đây là hệ thống CRM nội bộ, user sẽ do Admin tạo thay vì cho phép đăng ký tự do public. Ở milestone này tôi sẽ cung cấp 1 endpoint để tạo user admin khởi tạo (hoặc seed script), bạn thấy hợp lý không?
+> 1. **Kiến trúc RBAC:** Đối với đa số CRM cơ bản, roles như (Admin/Manager/Sales) thường cố định. Bạn muốn dùng cấu hình phân quyền "tĩnh" (trong code - dễ, nhanh, scale vừa) hay cần thiết kế bảng DB động (để Admin tự tạo Custom Role và đánh dấu tick từng nhóm Request)? Tôi đề xuất dùng Enum tĩnh cho phiên bản hiện tại để không over-engineering.
+> 2. **Dev Environment (Ghi chú ngoài):** Tôi thấy bạn chạy `npm run dev` ở ngoài root và bị lỗi. Bạn có muốn trong cột mốc này, tôi tạo thêm 1 file `package.json` cực nhẹ ở thư mục gốc dùng thư viện `concurrently` để chạy ứng dụng (cả front/back) bằng 1 lệnh duy nhất không?
 
 ## Proposed Changes
 
 ### Backend (`/backend`)
-- **Schema & Database (`prisma/schema.prisma`):**
-  - Thêm bảng `User`: Lưu trữ `email`, `password_hash`, thông tin tài khoản cơ bản, cờ `is_active`.
-- **Authentication Module (`src/modules/auth`):**
-  - **AuthService**: Logic login (bcrypt compare), sinh Access/Refresh token, hash password. Đóng gói payload.
-  - **AuthController**: Các endpoint `POST /auth/login`, `POST /auth/logout`, `POST /auth/refresh`, `POST /auth/change-password`.
+- **Guards & Decorators (`src/common/guards/`, `src/common/decorators/`):**
+  - Thêm `RolesGuard` check JWT token của Request lấy ra trường `role`.
+  - Tạo Decorator `@Roles('admin', 'manager')` đặt trên Controller.
 - **User Module (`src/modules/user`):**
-  - Logic để fetch user theo email, xử lý lấy thông tin account.
-- **Core Security:** HttpOnly Cookie (flag `SameSite=None, Secure`) cho các token trả về.
+  - Mở rộng thêm endpoint CRUD (`GET /users`, `POST /users`...) được bảo vệ bởi `@Roles('admin')`.
 
 ### Frontend (`/frontend`)
-- **Dependencies mới:** Cài đặt React Router DOM để điều hướng, lucide-react cho icon.
-- **Pages / Màn hình:**
-  - `LoginPage`: Form đăng nhập. Tích hợp shadcn/ui components (`Form`, `Input`, `Button`).
-  - Giao diện Change Password sau khi user đã đăng nhập.
-- **State & Routing:**
-  - Cấu hình Zustand để lưu metadata của user (tên, role...).
-  - Axios Interceptors: Bắt buộc cấu hình `withCredentials: true`, điều hướng bắt HTTP lỗi 401 thì gửi refresh token trước khi đẩy về login.
+- **RBAC Utility (`src/components/auth/RBAC.tsx`):**
+  - Xây dựng component `<CheckRole allowed={['admin']}> ... </CheckRole>` để bọc các nút nhấn hoặc thành phần UI nhạy cảm.
+- **Route Protection:** Cập nhật `App.tsx` với tuỳ chọn truyền cấu hình Role vào `ProtectedRoute`.
+- **UserManagementPage (`src/pages/admin/UserManagement.tsx`):**
+  - Một trang đơn giản hiển thị danh sách người dùng trong hệ thống (gọi API `GET /users`).
+
+### Root Workspace (tuỳ chọn thêm)
+- Thêm `package.json` ngoài cùng:
+  - `"dev": "concurrently \"npm run start:dev --prefix backend\" \"npm run dev --prefix frontend\""`
 
 ## Verification Plan
 ### Automated Tests
-- Unit Tests: Test `AuthService` với mock UserRepository để đảm bảo hash password gọi đúng, verify token trả chuẩn ở nhánh backend (vì API backend logic quan trọng).
+- Backend Test: Unit test the `RolesGuard` đảm bảo reject các account role `sales` khỏi endpoint `admin`.
 
 ### Manual Verification
-- Dùng trình duyệt form login Frontend -> Inspect tab Network kiểm tra Cookie `Set-Cookie` được backend trả về đạt chuẩn HttpOnly.
-- Gọi lại resource API nào đó, chứng thực request frontend đính kèm đúng Cookie token thay vì gửi qua Header trực tiếp.
+- Chạy hệ thống local.
+- Login account Admin -> Thấy menu Quản lý Users và truy cập được api.
+- Login account Sales -> Menu mờ đi / vào thẳng link thì bị force kick ra Dashboard hoặc báo lỗi 403 Forbidden.
