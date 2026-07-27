@@ -1,6 +1,8 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { IUserRepository, I_USER_REPOSITORY } from './repositories/user.repository.interface';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { I_USER_REPOSITORY } from './repositories/user.repository.interface';
+import type { IUserRepository } from './repositories/user.repository.interface';
 import { UserEntity } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
